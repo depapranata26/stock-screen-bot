@@ -5,15 +5,31 @@ def fetch(symbols):
     rows = []
 
     for s in symbols:
-        df = yf.download(s, period="1mo", interval="1d", progress=False)
+        df = yf.download(
+            s,
+            period="1mo",
+            interval="1d",
+            progress=False,
+            auto_adjust=False
+        )
+
+        # data tidak valid
         if df.empty or len(df) < 20:
+            continue
+
+        close = df["Close"].iloc[-1]
+        low_20 = df["Low"].tail(20).min()
+        vol_5 = df["Volume"].tail(5).mean()
+
+        # buang data rusak
+        if pd.isna(close) or pd.isna(low_20) or pd.isna(vol_5):
             continue
 
         rows.append({
             "kode": s.replace(".JK", ""),
-            "harga": round(df["Close"].iloc[-1]),
-            "volume_5d": int(df["Volume"].tail(5).mean()),
-            "low_20d": round(df["Low"].tail(20).min())
+            "harga": float(close),
+            "volume_5d": float(vol_5),
+            "low_20d": float(low_20)
         })
 
     return pd.DataFrame(rows)
