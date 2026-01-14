@@ -1,6 +1,6 @@
 from fetch_data import fetch
 from screen import screen
-from notify import send
+from notify_bot import send
 import config
 
 SYMBOLS = [
