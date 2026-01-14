@@ -9,11 +9,9 @@ def fetch(symbols):
             s,
             period="1mo",
             interval="1d",
-            progress=False,
-            auto_adjust=False
+            progress=False
         )
 
-        # data tidak valid
         if df.empty or len(df) < 20:
             continue
 
@@ -21,7 +19,6 @@ def fetch(symbols):
         low_20 = df["Low"].tail(20).min()
         vol_5 = df["Volume"].tail(5).mean()
 
-        # buang data rusak
         if pd.isna(close) or pd.isna(low_20) or pd.isna(vol_5):
             continue
 
@@ -29,7 +26,7 @@ def fetch(symbols):
             "kode": s.replace(".JK", ""),
             "harga": float(close),
             "volume_5d": float(vol_5),
-            "low_20d": float(low_20)
+            "low_20d": float(low_20),
         })
 
     return pd.DataFrame(rows)

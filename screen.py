@@ -8,8 +8,10 @@ def screen(df, max_price, min_volume):
     df["volume_5d"] = df["volume_5d"].astype(float)
     df["low_20d"] = df["low_20d"].astype(float)
 
-    return df[
-        (df["harga"] <= max_price) &
-        (df["volume_5d"] >= min_volume) &
+    mask = (
+        (df["harga"] <= float(max_price)) &
+        (df["volume_5d"] >= float(min_volume)) &
         (df["harga"] >= df["low_20d"])
-    ]
+    )
+
+    return df[mask]
