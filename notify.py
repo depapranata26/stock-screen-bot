@@ -1,14 +1,29 @@
 from telegram import Bot
 
 def send(token, chat_id, df):
-    if df.empty:
-        message = "📊 Screening EOD\n\nTidak ada saham lolos filter hari ini."
-    else:
-        lines = ["📊 Screening EOD\n"]
-        for _, row in df.iterrows():
-            lines.append(
-                f"- {row['kode']} | Harga: {row['harga']} | Vol: {row['volume_5d']:,}"
-            )
-        message = "\n".join(lines)
+    bot = Bot(token=token)
 
-    Bot(token=token).send_message(chat_id=chat_id, text=message)
+    if df.empty:
+        text = (
+            "📊 Screening Saham EOD\n\n"
+            "Tidak ada saham lolos filter hari ini.\n\n"
+            "Catatan:\n"
+            "- Ini BUKAN sinyal beli\n"
+            "- Tetap analisis manual"
+        )
+    else:
+        lines = ["📊 Screening Saham EOD\n"]
+
+        for _, r in df.iterrows():
+            lines.append(
+                f"- {r['kode']} | Harga: {int(r['harga'])} | "
+                f"Vol(5d): {int(r['volume_5d']):,}"
+            )
+
+        lines.append("\nCatatan:")
+        lines.append("- Ini BUKAN sinyal beli")
+        lines.append("- Wajib analisis manual")
+
+        text = "\n".join(lines)
+
+    bot.send_message(chat_id=chat_id, text=text)
