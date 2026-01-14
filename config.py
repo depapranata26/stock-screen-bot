@@ -1,7 +1,7 @@
 import os
 
-BOT_TOKEN = os.getenv("8512350847:AAE1PBEa1mZlJ76xEd2QLtPQQQCKyZny1Is")
-CHAT_ID = os.getenv("8512350847")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
 MAX_PRICE = 500
 MIN_VOLUME = 1_000_000
